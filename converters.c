@@ -1,7 +1,8 @@
 #include "header.h"
 
 
-int getNumberFromASCII(char *start, int WIDTH_NUMBER) {
+int getDigitFromASCII(char *start, int WIDTH_MATRIX, int WIDTH_NUM, int HEIGHT_NUM) {
+
     int i, j, count_x;
 
 
@@ -12,7 +13,8 @@ int getNumberFromASCII(char *start, int WIDTH_NUMBER) {
      * 4 has two x's
      * */
     count_x = 0;
-    for(j = 0; j < WIDTH_NUMBER; j++) {
+
+    for(j = 0; j < WIDTH_NUM; j++) {
         if( *(start+j) == 'x' ) {
             count_x++;
         }
@@ -31,13 +33,14 @@ int getNumberFromASCII(char *start, int WIDTH_NUMBER) {
     /*
      * 0 7 
      *
-     * 0 has two x's in the fourth row
+     * 0 has two x's in the middle
      * 7 has only one on the right side
      * */
     count_x = 0;
-    i = 3;
-    for(j = 0; j < WIDTH_NUMBER; j++) {
-        if( *(start+i*WIDTH_NUMBER+j) == 'x' ) {
+    i = HEIGHT_NUM / 2;
+
+    for(j = 0; j < WIDTH_NUM; j++) {
+        if( *(start+i*WIDTH_MATRIX+j) == 'x' ) {
             count_x++;
         }
     }
@@ -56,14 +59,15 @@ int getNumberFromASCII(char *start, int WIDTH_NUMBER) {
      * 2 3
      *
      * 2 and 3 have x in the second row on the right side
-     * 2 has x in the fifth row on the left side
-     * 3 has x in the fifth row on the right side, but not on the left side
+     * 2 has x in the row after middle on the left side
+     * 3 has x in the row after middle on the right side, but not on the left side
      * */
-    if( *(start+2*WIDTH_NUMBER-1) == 'x' && *(start+WIDTH_NUMBER) != 'x' ) {
+    if( *(start+WIDTH_MATRIX+WIDTH_NUM-1) == 'x' && *(start+WIDTH_MATRIX) != 'x' ) {
 
-        if( *(start+4*WIDTH_NUMBER) == 'x' ) {
+        if( *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX) == 'x' ) {
             return 2;
-        } else {
+        }
+        else {
             return 3;
         }
 
@@ -74,14 +78,15 @@ int getNumberFromASCII(char *start, int WIDTH_NUMBER) {
      * 5 6 
      *
      * 5 and 6 have x in the second row on the left side
-     * 5 has x in the fifth row on the right side, but not on the left side
-     * 6 has x's in the fifth row on both sides
+     * 5 has x in the row after middle on the right side, but not on the left side
+     * 6 has x's in the row after middle on both sides
      * */
-    if( *(start+2*WIDTH_NUMBER-1) != 'x' && *(start+WIDTH_NUMBER) == 'x' ) {
+    if( *(start+WIDTH_MATRIX+WIDTH_NUM-1) != 'x' && *(start+WIDTH_MATRIX) == 'x' ) {
 
-        if( *(start+4*WIDTH_NUMBER) == 'x' && *(start+5*WIDTH_NUMBER-1) == 'x' ) {
+        if( *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX) == 'x' && *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX+WIDTH_NUM-1) == 'x' ) {
             return 6;
-        } else {
+        }
+        else {
             return 5;
         }
 
@@ -95,10 +100,17 @@ int getNumberFromASCII(char *start, int WIDTH_NUMBER) {
      * 8 has x's on both sides
      * 9 has x only on the right side
      * */
-    if( *(start+5*WIDTH_NUMBER-1) == 'x' && *(start+4*WIDTH_NUMBER) == 'x' ) {
+    if( *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX) == 'x' && *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX+WIDTH_NUM-1) == 'x' ) {
         return 8;
-    } else {
+    }
+    else if( *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX) != 'x' && *(start+(HEIGHT_NUM/2+1)*WIDTH_MATRIX+WIDTH_NUM-1) == 'x' ) {
         return 9;
     }
+
+
+    /*
+     * not a number
+     * */
+    return -1;
 
 }
