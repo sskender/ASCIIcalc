@@ -114,3 +114,6 @@ int getDigitFromASCII(char *start, int WIDTH_MATRIX, int WIDTH_NUM, int HEIGHT_N
     return -1;
 
 }
+
+
+void getASCIIFromDigit(char *start, int n, int WIDTH_MATRIX, int WIDTH_NUM, int HEIGHT_NUM) {}

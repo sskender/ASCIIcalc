@@ -14,17 +14,16 @@ int main(void) {
 
     char input_ascii[HEIGHT_NUMBER][MAX_WIDTH_INPUT];
     char output_ascii[HEIGHT_NUMBER][MAX_WIDTH_OUTPUT];
-    int  input_numbers[MAX_NUMBERS];
-    int  n, i, digit, output_number = 0, number = 0, count_numbers = 0;
+    int  n, i, digit, output_number = 0, number = 0;
 
 
     /* input */
     scanf("%d", &n);
-    scanInputASCII(&input_ascii[0][0], MAX_WIDTH_INPUT, n, HEIGHT_NUMBER);
-    printInputASCII(&input_ascii[0][0], MAX_WIDTH_INPUT, n, HEIGHT_NUMBER);
+    scanASCII(&input_ascii[0][0], MAX_WIDTH_INPUT, n, HEIGHT_NUMBER);
+    printASCII(&input_ascii[0][0], MAX_WIDTH_INPUT, n, HEIGHT_NUMBER);
 
 
-    /* get numbers */
+    /* get number */
     for(i = 0; i < n; i = i + WIDTH_NUMBER + 1) {
         
         digit = getDigitFromASCII(&input_ascii[0][0]+i, MAX_WIDTH_INPUT, WIDTH_NUMBER, HEIGHT_NUMBER);
@@ -33,17 +32,11 @@ int main(void) {
             number = number * 10 + digit;
         }
         else {
-            input_numbers[count_numbers++] = number;
+            output_number = calculate(&output_number, &number, '+');
             number = 0;
         }
     }
-    input_numbers[count_numbers] = number;
-
-
-    /* calculate */
-    for(i = 0; i <= count_numbers; i++) {
-        output_number = calculate(&output_number, &input_numbers[i], '+');
-    }
+    output_number = calculate(&output_number, &number, '+');
 
 
     /* convert back to ascii */
