@@ -1,30 +1,33 @@
 #include <stdio.h>
 #include "header.h"
 
+int i, j;
 
-void printASCII(char *start, int WIDTH_MATRIX, int WIDTH_INPUT, int HEIGHT_NUM) {
 
-    int i,j;
+void printASCII(char *start, int MATRIX_WIDTH, int INPUT_WIDTH, int NUM_HEIGHT, FILE *dat_out) {
 
-    printf("ASCII:\n");
-    for(i = 0; i < HEIGHT_NUM; i++) {
-        for(j = 0; j < WIDTH_INPUT; j++) {
-            printf("%c", *(start+i*WIDTH_MATRIX+j) );
+    printf("\n");
+    fprintf(dat_out, "%d", INPUT_WIDTH);
+    
+    for(i = 0; i < NUM_HEIGHT; i++) {
+        for(j = 0; j < INPUT_WIDTH; j++) {
+
+            printf("%c", *(start+i*MATRIX_WIDTH+j) );
+            fprintf(dat_out, "%c", *(start+i*MATRIX_WIDTH+j) );
+            
         }
         printf("\n");
     }
-    printf("\n\n");
+    printf("\n");
 
 }
 
 
-void scanASCII(char *start, int WIDTH_MATRIX, int WIDTH_INPUT, int HEIGHT_NUM) {
+void scanASCII(char *start, int MATRIX_WIDTH, int INPUT_WIDTH, int NUM_HEIGHT) {
 
-    int i,j;
-
-    for(i = 0; i < HEIGHT_NUM; i++) {
-        for(j = 0; j < WIDTH_INPUT; j++) {
-            scanf("%c", (start+i*WIDTH_MATRIX+j) );
+    for(i = 0; i < NUM_HEIGHT; i++) {
+        for(j = 0; j < INPUT_WIDTH; j++) {
+            scanf("%c", (start+i*MATRIX_WIDTH+j) );
         }
     }
 

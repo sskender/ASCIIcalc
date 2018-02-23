@@ -1,47 +1,84 @@
 #include <stdio.h>
+#include <math.h>
 #include "header.h"
 
-#define HEIGHT_NUMBER 7
-#define WIDTH_NUMBER 5
+#define NUM_HEIGHT 7
+#define NUM_WIDTH 5
 
 #define MAX_WIDTH_INPUT 113     /* two 9 digit numbers with plus sign between */
 #define MAX_WIDTH_OUTPUT 59     /* one 10 digit number */
 
-#define MAX_NUMBERS 10          /* ten 1 digit numbers with plus sign between */
-
 
 int main(void) {
 
-    char input_ascii[HEIGHT_NUMBER][MAX_WIDTH_INPUT];
-    char output_ascii[HEIGHT_NUMBER][MAX_WIDTH_OUTPUT];
-    int  n, i, digit, output_number = 0, number = 0;
+    char input_ascii[NUM_HEIGHT][MAX_WIDTH_INPUT];
+    char output_ascii[NUM_HEIGHT][MAX_WIDTH_OUTPUT];
+
+    int input_len, output_len;
+    int num_sol = 0, num_sol_bkp, num_sol_len = 0, num_sol_len_bkp = 0;
+    int i, digit, num_temp = 0;
+    
+    FILE *dat_out = fopen("output.txt", "w");
+    char *start = &input_ascii[0][0];
 
 
-    /* input */
-    scanf("%d", &n);
-    scanASCII(&input_ascii[0][0], MAX_WIDTH_INPUT, n, HEIGHT_NUMBER);
-    printASCII(&input_ascii[0][0], MAX_WIDTH_INPUT, n, HEIGHT_NUMBER);
+    /*
+     * Input:
+     * 1) input len
+     * 2) whole matrix row by row
+     */
+    scanf("%d", &input_len);
+    scanASCII(start, MAX_WIDTH_INPUT, input_len, NUM_HEIGHT);
 
 
-    /* get number */
-    for(i = 0; i < n; i = i + WIDTH_NUMBER + 1) {
-        
-        digit = getDigitFromASCII(&input_ascii[0][0]+i, MAX_WIDTH_INPUT, WIDTH_NUMBER, HEIGHT_NUMBER);
+    /*
+     * calculate equation
+     */
+    for(i = 0; i < input_len; i = i + NUM_WIDTH + 1) {
+
+        digit = getDigitFromASCII(start+i, MAX_WIDTH_INPUT, NUM_WIDTH, NUM_HEIGHT);
 
         if(digit != -1) {
-            number = number * 10 + digit;
+            num_temp = num_temp * 10 + digit;
         }
         else {
-            output_number = calculate(&output_number, &number, '+');
-            number = 0;
+            num_sol += num_temp;
+            num_temp = 0;
         }
     }
-    output_number = calculate(&output_number, &number, '+');
+    num_sol += num_temp;
 
 
-    /* convert back to ascii */
+    /* get number of digits required to display solution */
+    num_sol_bkp = num_sol;
+    while(num_sol_bkp) {
+        num_sol_len++;
+        num_sol_len_bkp++;
+        num_sol_bkp /= 10;
+    }
 
-    printf("\nOUT: %d\n", output_number);
+
+    /* fill matrix with each digit */
+    start = &output_ascii[0][0];
+    for(i = 0; i < num_sol_len; i++) {
+
+        digit = num_sol / (int)pow(10,num_sol_len_bkp-1) % 10;
+        getASCIIFromDigit(start, digit, MAX_WIDTH_OUTPUT, NUM_WIDTH, NUM_HEIGHT);
+
+        num_sol_len_bkp--;
+        start += NUM_WIDTH + 1;
+
+    }
+
+
+    /*
+     * display ascii and save to file
+     * (minus one to remove last column of dots)
+     */
+    output_len = num_sol_len * (NUM_WIDTH + 1) - 1;
+    printASCII(&output_ascii[0][0], MAX_WIDTH_OUTPUT, output_len, NUM_HEIGHT, dat_out);
+
+    fclose(dat_out);
 
     return 0;
 }

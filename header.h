@@ -1,7 +1,7 @@
-void printASCII(char *start, int WIDTH_MATRIX, int WIDTH_INPUT, int HEIGHT_NUM);
-void scanASCII(char *start, int WIDTH_MATRIX, int WIDTH_INPUT, int HEIGHT_NUM);
+#include <stdio.h>
 
-int getDigitFromASCII(char *start, int WIDTH_MATRIX, int WIDTH_NUM, int HEIGHT_NUM);
-void getASCIIFromDigit(char *start, int n, int WIDTH_MATRIX, int WIDTH_NUM, int HEIGHT_NUM);
+void scanASCII(char *start, int MATRIX_WIDTH, int INPUT_WIDTH, int NUM_HEIGHT);
+void printASCII(char *start, int MATRIX_WIDTH, int INPUT_WIDTH, int NUM_HEIGHT, FILE *dat_out);
 
-int calculate(int *a, int *b, char operation);
+int getDigitFromASCII(char *start, int MATRIX_WIDTH, int NUM_WIDTH, int NUM_HEIGHT);
+void getASCIIFromDigit(char *start, int digit, int MATRIX_WIDTH, int NUM_WIDTH, int NUM_HEIGHT);
