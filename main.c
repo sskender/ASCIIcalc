@@ -28,6 +28,7 @@ int main(void) {
      * 2) whole matrix row by row
      */
     scanf("%d", &input_len);
+    getchar();                  /* grab '\n' char */
     scanASCII(start, MAX_WIDTH_INPUT, input_len, NUM_HEIGHT);
 
 
